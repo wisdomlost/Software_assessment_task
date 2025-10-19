@@ -1,3 +1,5 @@
+#include "LED.h"
+
 #define LED1_PIN        (A11)
 #define LED2_PIN        (A12)
 
