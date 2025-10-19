@@ -34,6 +34,7 @@
 ********************************************************************************************************************/
 
 #include "zf_common_headfile.h"
+#include "LED.h"
 void NMI_Handler(void)       __attribute__((interrupt()));
 void HardFault_Handler(void) __attribute__((interrupt()));
 
@@ -296,6 +297,7 @@ void TIM2_IRQHandler(void)
     if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
        TIM_ClearITPendingBit(TIM2, TIM_IT_Update );
+       gpio_toggle_level(LED2_PIN);
 
 
     }

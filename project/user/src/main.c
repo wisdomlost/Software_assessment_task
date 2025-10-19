@@ -36,6 +36,11 @@
 #include "LED.h"
 #include "Sound.h"
 
+#define PIT_CH                  (TIM2_PIT )                                      // 使用的周期中断编号 如果修改 需要同步对应修改周期中断编号与 isr.c 中的调用
+#define PIT_PRIORITY            (TIM2_IRQn)                                      // 对应周期中断的中断编号
+
+uint8 pit_state = 0;
+
 int main (void)
 {
     clock_init(SYSTEM_CLOCK_120M);      // 初始化芯片时钟 工作频率为 120MHz
@@ -45,6 +50,9 @@ int main (void)
 
     LED_Init();
     pwm_init(PWM_CH1, 2000, 0);                                                // 初始化 PWM 通道 频率 17KHz 初始占空比 0%
+    pit_ms_init(PIT_CH, 1000);                                                  // 初始化 PIT_CH0 为周期中断 1000ms 周期
+
+    interrupt_set_priority(PIT_PRIORITY, 0);                                    // 设置 PIT1 对周期中断的中断优先级为 0
 
     // 此处编写用户代码 例如外设初始化代码等
 
@@ -57,7 +65,9 @@ int main (void)
 
 
 
+
         // 此处编写需要循环执行的代码
     }
 }
+
 
