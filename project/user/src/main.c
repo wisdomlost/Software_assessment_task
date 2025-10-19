@@ -35,13 +35,13 @@
 #include "zf_common_headfile.h"
 #include "LED.h"
 
-
 int main (void)
 {
     clock_init(SYSTEM_CLOCK_120M);      // 初始化芯片时钟 工作频率为 120MHz
     debug_init();                       // 务必保留，本函数用于初始化MPU 时钟 调试串口
 
     // 此处编写用户代码 例如外设初始化代码等
+
     LED_Init();
 
     // 此处编写用户代码 例如外设初始化代码等
@@ -49,6 +49,7 @@ int main (void)
     while(1)
     {
         // 此处编写需要循环执行的代码
+
         LED_blink();
 
 
