@@ -54,6 +54,12 @@ int main (void)
 
     interrupt_set_priority(PIT_PRIORITY, 0);                                    // 设置 PIT1 对周期中断的中断优先级为 0
 
+    //屏幕初始化
+    tft180_set_dir(TFT180_PORTAIT);
+    tft180_set_font(TFT180_8X16_FONT);
+    tft180_set_color(RGB565_RED, RGB565_BLACK);
+    tft180_init();
+
     // 此处编写用户代码 例如外设初始化代码等
 
     while(1)
@@ -62,7 +68,7 @@ int main (void)
 
         LED_blink();
         sound();
-
+        tft180_show_string(0,0,"Hellow World");
 
 
 
