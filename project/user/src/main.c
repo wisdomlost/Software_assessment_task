@@ -38,6 +38,8 @@
 
 #define PIT_CH                  (TIM2_PIT )                                      // 使用的周期中断编号 如果修改 需要同步对应修改周期中断编号与 isr.c 中的调用
 #define PIT_PRIORITY            (TIM2_IRQn)                                      // 对应周期中断的中断编号
+#define ADC_CHANNEL1            (ADC1_IN7_A7)
+
 
 uint8 pit_state = 0;
 
@@ -54,6 +56,8 @@ int main (void)
 
     interrupt_set_priority(PIT_PRIORITY, 0);                                    // 设置 PIT1 对周期中断的中断优先级为 0
 
+    adc_init(ADC_CHANNEL1, ADC_12BIT);                                          // 初始化对应 ADC 通道为对应精度
+
     //屏幕初始化
     tft180_set_dir(TFT180_PORTAIT);
     tft180_set_font(TFT180_8X16_FONT);
@@ -68,9 +72,9 @@ int main (void)
 
         LED_blink();
         sound();
-        tft180_show_string(0,0,"Hellow World");
+        tft180_show_string(0,0,"Hello World!");
 
-
+        tft180_show_uint(0,16,adc_convert(ADC_CHANNEL1),4);
 
         // 此处编写需要循环执行的代码
     }
