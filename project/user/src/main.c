@@ -39,6 +39,8 @@
 #define PIT_CH                  (TIM2_PIT )                                      // 使用的周期中断编号 如果修改 需要同步对应修改周期中断编号与 isr.c 中的调用
 #define PIT_PRIORITY            (TIM2_IRQn)                                      // 对应周期中断的中断编号
 #define ADC_CHANNEL1            (ADC1_IN7_A7)
+#define FLASH_SECTION_INDEX       (63)                                          // 存储数据用的扇区 倒数第一个扇区
+#define FLASH_PAGE_INDEX          (3)                                           // 存储数据用的页码 倒数第一个页码
 
 
 uint8 pit_state = 0;
@@ -64,7 +66,19 @@ int main (void)
     tft180_set_color(RGB565_RED, RGB565_BLACK);
     tft180_init();
 
+    if(flash_check(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX))                      // 判断是否有数据
+    {
+        flash_erase_sector(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);              // 擦除这一页
+    }
+    flash_buffer_clear();                                                       // 清空缓冲区
+    flash_union_buffer[0].float_type  = 3.141592;                              // 向缓冲区第 0 个位置写入 float  数据
+    flash_write_page_from_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);        // 向指定 Flash 扇区的页码写入缓冲区数据
+    flash_read_page_to_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);           // 将数据从 flash 读取到缓冲区
+    tft180_show_float(0, 32, flash_union_buffer[0].float_type, 1, 6);
+
     // 此处编写用户代码 例如外设初始化代码等
+
+
 
     while(1)
     {
@@ -73,8 +87,10 @@ int main (void)
         LED_blink();
         sound();
         tft180_show_string(0,0,"Hello World!");
+        tft180_show_string(0,16,"ADC:");
+        tft180_show_uint(32,16,adc_convert(ADC_CHANNEL1),4);
 
-        tft180_show_uint(0,16,adc_convert(ADC_CHANNEL1),4);
+
 
         // 此处编写需要循环执行的代码
     }
