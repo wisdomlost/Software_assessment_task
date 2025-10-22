@@ -1,4 +1,4 @@
-code/Sound.o: D:/git/project/code/Sound.c \
+code/Menu.o: D:/git/project/code/Menu.c D:/git/project/code/Menu.h \
  D:\git\libraries\zf_common/zf_common_headfile.h \
  D:\git\libraries\sdk\Peripheral/ch32v30x_adc.h \
  D:\git\libraries\sdk\Peripheral/ch32v30x.h \
@@ -81,7 +81,9 @@ code/Sound.o: D:/git/project/code/Sound.c \
  D:\git\libraries\zf_device/zf_device_ble6a20.h \
  D:\git\libraries\zf_components/seekfree_assistant.h \
  D:\git\libraries\zf_components/seekfree_assistant_interface.h \
- D:/git/project/code/Sound.h
+ D:/git/project/code/Config.h
+
+D:/git/project/code/Menu.h:
 
 D:\git\libraries\zf_common/zf_common_headfile.h:
 
@@ -247,4 +249,4 @@ D:\git\libraries\zf_components/seekfree_assistant.h:
 
 D:\git\libraries\zf_components/seekfree_assistant_interface.h:
 
-D:/git/project/code/Sound.h:
+D:/git/project/code/Config.h:

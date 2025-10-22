@@ -80,7 +80,8 @@ code/LED.o: D:/git/project/code/LED.c D:/git/project/code/LED.h \
  D:\git\libraries\zf_device/zf_device_dl1b.h \
  D:\git\libraries\zf_device/zf_device_ble6a20.h \
  D:\git\libraries\zf_components/seekfree_assistant.h \
- D:\git\libraries\zf_components/seekfree_assistant_interface.h
+ D:\git\libraries\zf_components/seekfree_assistant_interface.h \
+ D:/git/project/code/Config.h
 
 D:/git/project/code/LED.h:
 
@@ -247,3 +248,5 @@ D:\git\libraries\zf_device/zf_device_ble6a20.h:
 D:\git\libraries\zf_components/seekfree_assistant.h:
 
 D:\git\libraries\zf_components/seekfree_assistant_interface.h:
+
+D:/git/project/code/Config.h:

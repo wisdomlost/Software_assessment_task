@@ -81,7 +81,8 @@ user_c/main.o: D:/git/project/user/src/main.c \
  D:\git\libraries\zf_device/zf_device_ble6a20.h \
  D:\git\libraries\zf_components/seekfree_assistant.h \
  D:\git\libraries\zf_components/seekfree_assistant_interface.h \
- D:\git\project\code/LED.h D:\git\project\code/Sound.h
+ D:\git\project\code/LED.h D:\git\project\code/Menu.h \
+ D:\git\project\code/Config.h
 
 D:\git\libraries\zf_common/zf_common_headfile.h:
 
@@ -249,4 +250,6 @@ D:\git\libraries\zf_components/seekfree_assistant_interface.h:
 
 D:\git\project\code/LED.h:
 
-D:\git\project\code/Sound.h:
+D:\git\project\code/Menu.h:
+
+D:\git\project\code/Config.h:

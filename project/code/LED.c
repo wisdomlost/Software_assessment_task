@@ -3,6 +3,7 @@
 
 
 #include "zf_common_headfile.h"
+#include "Config.h"
 
 void LED_Init()
 {

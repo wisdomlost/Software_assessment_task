@@ -34,16 +34,19 @@
 ********************************************************************************************************************/
 #include "zf_common_headfile.h"
 #include "LED.h"
-#include "Sound.h"
+#include "Menu.h"
+#include "Config.h"
 
-#define PIT_CH                  (TIM2_PIT )                                      // 使用的周期中断编号 如果修改 需要同步对应修改周期中断编号与 isr.c 中的调用
-#define PIT_PRIORITY            (TIM2_IRQn)                                      // 对应周期中断的中断编号
-#define ADC_CHANNEL1            (ADC1_IN7_A7)
-#define FLASH_SECTION_INDEX       (63)                                          // 存储数据用的扇区 倒数第一个扇区
-#define FLASH_PAGE_INDEX          (3)                                           // 存储数据用的页码 倒数第一个页码
-
+extern char currentMenu;
+extern char currentOption;
+extern char LEDFlag;
+extern char SoundFlag;
 
 uint8 pit_state = 0;
+extern uint8 exti_state;
+uint8 Key_Value=KEY_NONE;
+
+
 
 int main (void)
 {
@@ -53,7 +56,7 @@ int main (void)
     // 此处编写用户代码 例如外设初始化代码等
 
     LED_Init();
-    pwm_init(PWM_CH1, 2000, 0);                                                // 初始化 PWM 通道 频率 17KHz 初始占空比 0%
+    pwm_init(PWM_CH1, 2000, 0);                                                // 初始化 PWM 通道 频率 2KHz 初始占空比 0%
     pit_ms_init(PIT_CH, 1000);                                                  // 初始化 PIT_CH0 为周期中断 1000ms 周期
 
     interrupt_set_priority(PIT_PRIORITY, 0);                                    // 设置 PIT1 对周期中断的中断优先级为 0
@@ -74,26 +77,125 @@ int main (void)
     flash_union_buffer[0].float_type  = 3.141592;                              // 向缓冲区第 0 个位置写入 float  数据
     flash_write_page_from_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);        // 向指定 Flash 扇区的页码写入缓冲区数据
     flash_read_page_to_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);           // 将数据从 flash 读取到缓冲区
-    tft180_show_float(0, 32, flash_union_buffer[0].float_type, 1, 6);
+//    tft180_show_float(0, 32, flash_union_buffer[0].float_type, 1, 6);
+
+    exti_init(KEY_IN1, EXTI_TRIGGER_FALLING);                                      // 初始化 KEY1 为外部中断输入 下降沿触发
+    exti_init(KEY_IN2, EXTI_TRIGGER_FALLING);                                      // 初始化 KEY2 为外部中断输入 下降沿触发
+    exti_init(KEY_IN3, EXTI_TRIGGER_FALLING);                                      // 初始化 KEY3 为外部中断输入 下降沿触发
+
+    interrupt_set_priority(KEY1_EXTI, (0<<5) || 1);                             // 设置 KEY1 对应外部中断的中断抢占优先级0，子优先级1
+    interrupt_set_priority(KEY2_EXTI, (0<<5) || 1);                             // 设置 KEY2 对应外部中断的中断抢占优先级0，子优先级1
+    interrupt_set_priority(KEY3_EXTI, (0<<5) || 1);                             // 设置 KEY3 对应外部中断的中断抢占优先级0，子优先级1
+
 
     // 此处编写用户代码 例如外设初始化代码等
 
-
-
-    while(1)
-    {
+   while(1)
+   {
         // 此处编写需要循环执行的代码
 
-        LED_blink();
-        sound();
-        tft180_show_string(0,0,"Hello World!");
-        tft180_show_string(0,16,"ADC:");
-        tft180_show_uint(32,16,adc_convert(ADC_CHANNEL1),4);
+//        LED_blink();
+//        sound();
+//        tft180_show_string(0,0,"Hello World!");
+//        tft180_show_string(0,16,"ADC:");
+//        tft180_show_uint(32,16,adc_convert(ADC_CHANNEL1),4);
+//
+//        tft180_show_uint(0,48,gpio_get_level(D8),1);
+//        tft180_show_uint(0,64,gpio_get_level(B12),1);
+//        tft180_show_uint(0,80,gpio_get_level(B14),1);
+        Key_Value=gpio_get_level(KEY_IN1)+2*gpio_get_level(KEY_IN2)+4*gpio_get_level(KEY_IN3);
+
+        DisplayMenu();
+        DisplayOption();
+        if(exti_state)
+        {
+            exti_state=0;
+            exti_disable(D8);
+            exti_disable(B12);
+            exti_disable(B14);
+            Key_Value=gpio_get_level(KEY_IN1)+2*gpio_get_level(KEY_IN2)+4*gpio_get_level(KEY_IN3);
 
 
+            if(Key_Value==KEY_MID)
+            {
+                tft180_clear();
+
+                if(currentMenu==0)
+                {
+                    currentMenu=1;
+                    tft180_clear();
+                }
+                if(currentMenu==2)
+                {
+                    if(currentOption==0)
+                    {
+                        if(LEDFlag)
+                        {
+                            LEDFlag=0;
+                        }
+                        else
+                        {
+                            LEDFlag=1;
+                        }
+                    }
+                    if(currentOption==1)
+                    {
+                        if(SoundFlag)
+                        {
+                            SoundFlag=0;
+                        }
+                        else
+                        {
+                            SoundFlag=1;
+                        }
+                    }
+                }
+            }
+            if(Key_Value==KEY_MID&&currentOption==1)
+            {
+                currentMenu=2;
+                tft180_clear();
+
+            }
+            if(Key_Value==KEY_LEFT)
+            {
+                currentMenu=0;
+                tft180_clear();
+
+            }
+
+            if(Key_Value==KEY_UP)
+            {
+                currentOption--;
+                tft180_clear();
+
+                if(currentOption==-1)
+                {
+                    currentOption=1;
+                }
+            }
+            if(Key_Value==KEY_DOWN)
+            {
+                currentOption++;
+                tft180_clear();
+
+                if(currentOption==2)
+                {
+                    currentOption=0;
+                }
+            }
+
+        }
+        if(Key_Value==KEY_NONE)
+        {
+            exti_enable(D8);
+            exti_enable(B12);
+            exti_enable(B14);
+        }
 
         // 此处编写需要循环执行的代码
     }
 }
+
 
 

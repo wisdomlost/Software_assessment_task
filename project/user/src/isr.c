@@ -34,7 +34,10 @@
 ********************************************************************************************************************/
 
 #include "zf_common_headfile.h"
-#include "LED.h"
+#include "Config.h"
+
+uint8 exti_state=0;
+
 void NMI_Handler(void)       __attribute__((interrupt()));
 void HardFault_Handler(void) __attribute__((interrupt()));
 
@@ -223,6 +226,7 @@ void EXTI9_5_IRQHandler(void)
     {
         EXTI_ClearITPendingBit(EXTI_Line8);
 
+        exti_state = 1;
     }
     if(SET == EXTI_GetITStatus(EXTI_Line9))
     {
@@ -252,6 +256,8 @@ void EXTI15_10_IRQHandler(void)
     {
         EXTI_ClearITPendingBit(EXTI_Line12);
 
+        exti_state = 1;
+
     }
     if(SET == EXTI_GetITStatus(EXTI_Line13))
     {
@@ -268,9 +274,13 @@ void EXTI15_10_IRQHandler(void)
     if(SET == EXTI_GetITStatus(EXTI_Line14))
     {
         // -----------------* DM1XA 光信号 预置中断处理函数 *-----------------
-        dm1xa_light_callback();
+//        dm1xa_light_callback();
         // -----------------* DM1XA 光信号 预置中断处理函数 *-----------------
+
         EXTI_ClearITPendingBit(EXTI_Line14);
+
+        exti_state = 1;
+
     }
     if(SET == EXTI_GetITStatus(EXTI_Line15))
     {

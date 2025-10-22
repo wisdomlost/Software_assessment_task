@@ -9,8 +9,7 @@
 #ifndef LED_H_
 #define LED_H_
 
-#define LED1_PIN        (A11)
-#define LED2_PIN        (A12)
+
 
 void LED_Init();
 void LED_blink();
