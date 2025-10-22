@@ -56,11 +56,8 @@ void DisplayMenu()
             if(SoundFlag)
             {
                 tft180_show_string(50,32,"ON");
-                for(int8 duty = 0; duty <=50 ; duty ++)                    // 输出占空比递增到 50%
-                {
-                    pwm_set_duty(PWM_CH1, duty);                // 更新对应通道占空比额
-                    system_delay_us(100);
-                }
+                pwm_set_duty(PWM_CH1, 5000);                // 更新对应通道占空比额
+
 
             }
             else

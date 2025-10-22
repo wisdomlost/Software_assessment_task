@@ -122,8 +122,16 @@ int main (void)
 
                 if(currentMenu==0)
                 {
-                    currentMenu=1;
-                    tft180_clear();
+                    if(currentOption==0)
+                    {
+                        currentMenu=1;
+                        tft180_clear();
+                    }
+                    if(currentOption==1)
+                    {
+                        currentMenu=2;
+                        tft180_clear();
+                    }
                 }
                 if(currentMenu==2)
                 {
@@ -151,12 +159,7 @@ int main (void)
                     }
                 }
             }
-            if(Key_Value==KEY_MID&&currentOption==1)
-            {
-                currentMenu=2;
-                tft180_clear();
 
-            }
             if(Key_Value==KEY_LEFT)
             {
                 currentMenu=0;
