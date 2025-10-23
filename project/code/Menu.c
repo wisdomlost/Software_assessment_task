@@ -66,7 +66,13 @@ void DisplayMenu()
                 pwm_set_duty(PWM_CH1, 0);                // 更新对应通道占空比额
             }
             break;
+        case 3:
+            tft180_show_string(0,16,"ADC_Pin:");
+            tft180_show_string(80,16,"A7");
+            break;
+
     }
+
 }
 void DisplayOption()
 {

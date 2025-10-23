@@ -69,13 +69,13 @@ int main (void)
     tft180_set_color(RGB565_RED, RGB565_BLACK);
     tft180_init();
 
-    if(flash_check(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX))                      // 判断是否有数据
-    {
-        flash_erase_sector(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);              // 擦除这一页
-    }
-    flash_buffer_clear();                                                       // 清空缓冲区
-    flash_union_buffer[0].float_type  = 3.141592;                              // 向缓冲区第 0 个位置写入 float  数据
-    flash_write_page_from_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);        // 向指定 Flash 扇区的页码写入缓冲区数据
+//    if(flash_check(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX))                      // 判断是否有数据
+//    {
+//        flash_erase_sector(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);              // 擦除这一页
+//    }
+//    flash_buffer_clear();                                                       // 清空缓冲区
+//    flash_union_buffer[0].float_type  = 3.141592;                              // 向缓冲区第 0 个位置写入 float  数据
+//    flash_write_page_from_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);        // 向指定 Flash 扇区的页码写入缓冲区数据
     flash_read_page_to_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);           // 将数据从 flash 读取到缓冲区
 //    tft180_show_float(0, 32, flash_union_buffer[0].float_type, 1, 6);
 
@@ -119,20 +119,6 @@ int main (void)
             if(Key_Value==KEY_MID)
             {
                 tft180_clear();
-
-                if(currentMenu==0)
-                {
-                    if(currentOption==0)
-                    {
-                        currentMenu=1;
-                        tft180_clear();
-                    }
-                    if(currentOption==1)
-                    {
-                        currentMenu=2;
-                        tft180_clear();
-                    }
-                }
                 if(currentMenu==2)
                 {
                     if(currentOption==0)
@@ -158,6 +144,30 @@ int main (void)
                         }
                     }
                 }
+                if(currentMenu==1)
+                {
+                    if(currentOption==0)
+                    {
+                        tft180_clear();
+                        currentMenu=3;
+                    }
+                }
+                if(currentMenu==0)
+                {
+                    if(currentOption==0)
+                    {
+                        currentMenu=1;
+                        tft180_clear();
+                    }
+                    if(currentOption==1)
+                    {
+                        currentMenu=2;
+                        currentOption=0;
+                        tft180_clear();
+                    }
+                }
+
+
             }
 
             if(Key_Value==KEY_LEFT)
