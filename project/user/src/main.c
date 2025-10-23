@@ -118,6 +118,15 @@ int main (void)
 
             if(Key_Value==KEY_MID)
             {
+                if(currentMenu==4)
+                {
+                    if(currentOption==0)
+                    {
+
+                        currentMenu=5;
+                        tft180_clear();
+                    }
+                }
                 tft180_clear();
                 if(currentMenu==2)
                 {
@@ -165,6 +174,12 @@ int main (void)
                         currentOption=0;
                         tft180_clear();
                     }
+                    if(currentOption==2)
+                    {
+                        currentMenu=4;
+                        currentOption=0;
+                        tft180_clear();
+                    }
                 }
 
 
@@ -172,7 +187,16 @@ int main (void)
 
             if(Key_Value==KEY_LEFT)
             {
-                currentMenu=0;
+                if(currentMenu==3)
+                {
+                    currentMenu=1;
+                }
+                else
+                {
+                    currentMenu=0;
+
+                }
+
                 tft180_clear();
 
             }
@@ -184,7 +208,7 @@ int main (void)
 
                 if(currentOption==-1)
                 {
-                    currentOption=1;
+                    currentOption=2;
                 }
             }
             if(Key_Value==KEY_DOWN)
@@ -192,7 +216,7 @@ int main (void)
                 currentOption++;
                 tft180_clear();
 
-                if(currentOption==2)
+                if(currentOption==3)
                 {
                     currentOption=0;
                 }

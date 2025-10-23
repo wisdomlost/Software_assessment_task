@@ -8,6 +8,8 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+#include "zf_common_typedef.h"
+
 #define LED1_PIN        (A11)
 #define LED2_PIN        (A12)
 #define PWM_CH1                 (TIM1_PWM_MAP0_CH1_A8)
@@ -32,4 +34,9 @@
 #define KEY3_EXTI               (EXTI15_10_IRQn)                                  // 对应外部中断的中断编号
 
 
+extern const uint8 chinese_name[8][16];
+extern const uint8 chinese_site[8][16];
+extern const uint8 chinese_1[14][16];
+extern const uint8 gImage_1[86048];
+extern const uint8 gImage_2[86048];
 #endif /* CONFIG_H_ */
