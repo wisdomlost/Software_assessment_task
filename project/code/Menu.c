@@ -35,7 +35,7 @@ void DisplayMenu()
             tft180_show_string(0,16,"ADC:");
             tft180_show_uint(48,16,adc_convert(ADC_CHANNEL1),4);
             tft180_show_string(0,32,"Flash:");
-            tft180_show_float(48, 32, flash_union_buffer[0].float_type, 1, 6);
+            tft180_show_int(80, 32, flash_union_buffer[0].int32_type, 2);
             break;
 
         case 2:

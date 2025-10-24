@@ -45,7 +45,7 @@ extern char SoundFlag;
 uint8 pit_state = 0;
 extern uint8 exti_state;
 uint8 Key_Value=KEY_NONE;
-
+int32 cnt=0;
 
 
 int main (void)
@@ -74,10 +74,11 @@ int main (void)
 //        flash_erase_sector(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);              // 擦除这一页
 //    }
 //    flash_buffer_clear();                                                       // 清空缓冲区
-//    flash_union_buffer[0].float_type  = 3.141592;                              // 向缓冲区第 0 个位置写入 float  数据
+//    flash_union_buffer[0].int32_type  = 0;                              // 向缓冲区第 0 个位置写入 float  数据
 //    flash_write_page_from_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);        // 向指定 Flash 扇区的页码写入缓冲区数据
     flash_read_page_to_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);           // 将数据从 flash 读取到缓冲区
-//    tft180_show_float(0, 32, flash_union_buffer[0].float_type, 1, 6);
+    cnt=flash_union_buffer[0].int32_type;
+    //    tft180_show_float(0, 32, flash_union_buffer[0].float_type, 1, 6);
 
     exti_init(KEY_IN1, EXTI_TRIGGER_FALLING);                                      // 初始化 KEY1 为外部中断输入 下降沿触发
     exti_init(KEY_IN2, EXTI_TRIGGER_FALLING);                                      // 初始化 KEY2 为外部中断输入 下降沿触发
@@ -115,7 +116,27 @@ int main (void)
             exti_disable(B14);
             Key_Value=gpio_get_level(KEY_IN1)+2*gpio_get_level(KEY_IN2)+4*gpio_get_level(KEY_IN3);
 
+            if(currentMenu==1&&currentOption==1)
+            {
+                if(Key_Value==KEY_1)
+                {
+                    cnt--;
 
+                }
+                if(Key_Value==KEY_2)
+                {
+                    cnt++;
+                }
+                if(flash_check(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX))                      // 判断是否有数据
+                {
+                  flash_erase_sector(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);              // 擦除这一页
+                }
+                flash_buffer_clear();                                                       // 清空缓冲区
+                flash_union_buffer[0].int32_type  = cnt;                              // 向缓冲区第 0 个位置写入 float  数据
+                flash_write_page_from_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);        // 向指定 Flash 扇区的页码写入缓冲区数据
+                flash_read_page_to_buffer(FLASH_SECTION_INDEX, FLASH_PAGE_INDEX);           // 将数据从 flash 读取到缓冲区
+
+            }
             if(Key_Value==KEY_MID)
             {
                 if(currentMenu==4)
